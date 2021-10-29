@@ -15,7 +15,7 @@ import { withRouter } from "react-router";
 
 const Main = ({ history }) => {
   const [userName, setUserName] = useState("");
-  const [defaultCity, setDefaultCity] = useState("");
+  const [defaultCity, setDefaultCity] = useState("Dublin");
 
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ const Main = ({ history }) => {
           <InputGroup className="mb-3">
             <DropdownButton
               variant="outline-secondary"
-              title="Select City"
+              title={defaultCity}
               id="input-group-dropdown-1"
             >
               <Dropdown.Item onClick={() => setDefaultCity("Dublin")}>
@@ -44,6 +44,13 @@ const Main = ({ history }) => {
               <Dropdown.Item onClick={() => setDefaultCity("New York")}>
                 New York
               </Dropdown.Item>
+              <Dropdown.Item onClick={() => setDefaultCity("Berlin")}>
+                Berlin
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setDefaultCity("Las Vegas")}>
+                Las Vegas
+              </Dropdown.Item>
+
               <Dropdown.Item onClick={() => setDefaultCity("Berlin")}>
                 Berlin
               </Dropdown.Item>

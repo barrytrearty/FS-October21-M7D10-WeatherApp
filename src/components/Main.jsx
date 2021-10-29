@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setDefaultCityAction } from "../actions";
+import { setDefaultCityAction, addCityToFavoritesAction } from "../actions";
 import {
   Col,
   Card,
@@ -18,6 +18,7 @@ import {
 const Main = () => {
   const name = useSelector((state) => state.user.username);
   const defaultCity = useSelector((state) => state.user.defaultCity);
+  const favorites = useSelector((state) => state.user.favorites);
   const [coordsObj, setCoordsObj] = useState(null);
   const [weatherObj, setWeatherObj] = useState(null);
   const [city, setCity] = useState("Dublin");
@@ -192,14 +193,17 @@ const Main = () => {
             <Card.Header>Favorite Cities</Card.Header>
             <Card.Body>
               <Card.Text>
-                <div>
-                  <h3
-                    className="pointerCity"
-                    onClick={() => dispatch(setDefaultCityAction("Dublin"))}
-                  >
-                    Dublin
-                  </h3>
-                </div>
+                {favorites.map((city) => (
+                  <div>
+                    <h3
+                      className="pointerCity"
+                      onClick={() => dispatch(setDefaultCityAction(city))}
+                    >
+                      {city}
+                    </h3>
+                  </div>
+                ))}
+
                 <div>
                   <h3
                     className="pointerCity"
@@ -242,6 +246,14 @@ const Main = () => {
                 </div>
               </Card.Text>
             </Card.Body>
+            <FormControl
+              onChange={(e) =>
+                dispatch(addCityToFavoritesAction(e.target.value))
+              }
+              placeholder="Add City"
+              aria-label="Add City"
+              aria-describedby="basic-addon2"
+            />
           </Card>
         </Col>
       </Row>

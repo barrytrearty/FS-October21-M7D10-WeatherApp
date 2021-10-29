@@ -12,7 +12,7 @@ const componseEnhancers =
 export const initialState = {
   weatherToday: { Dublin: [] },
   cities: { favorites: [] },
-  user: { username: "", defaultCity: "" },
+  user: { username: "", defaultCity: "", favorites: [] },
 };
 
 const persistConfig = {

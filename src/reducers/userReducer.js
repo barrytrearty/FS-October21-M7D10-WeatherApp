@@ -1,5 +1,9 @@
 import { initialState } from "../store";
-import { SET_USERNAME, SET_DEFAULT_CITY } from "../actions";
+import {
+  SET_USERNAME,
+  SET_DEFAULT_CITY,
+  ADD_CITY_TO_FAVORITES,
+} from "../actions";
 
 export const userReducer = (state = initialState.user, action) => {
   switch (action.type) {
@@ -12,6 +16,13 @@ export const userReducer = (state = initialState.user, action) => {
       return {
         ...state,
         defaultCity: action.payload,
+      };
+    case ADD_CITY_TO_FAVORITES:
+      return {
+        ...state,
+        favorites: state.favorites.includes(action.payload)
+          ? [...state.favorites]
+          : [...state.favorites, action.payload],
       };
     default:
       return state;
