@@ -14,31 +14,28 @@ import {
   Button,
   Carousel,
 } from "react-bootstrap";
+import FavoriteCities from "../components/FavoriteCities";
 
 const Main = () => {
-  const name = useSelector((state) => state.user.username);
+  const username = useSelector((state) => state.user.username);
   const defaultCity = useSelector((state) => state.user.defaultCity);
-  const favorites = useSelector((state) => state.user.favorites);
+
   const [coordsObj, setCoordsObj] = useState(null);
   const [weatherObj, setWeatherObj] = useState(null);
-  const [city, setCity] = useState("Dublin");
+
   const [time, setTime] = useState("today");
-  const [lon, setLon] = useState("");
-  const [lat, setLat] = useState("");
-  const dispatch = useDispatch();
 
   const getWeatherCoords = async () => {
     try {
       let response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${defaultCity}&appid=622e478403a72ca161be9811cdcc6df5&units=metric`
       );
-      // console.log(response);
+
       let fetchedCoords = await response.json();
       setCoordsObj(fetchedCoords);
       console.log(coordsObj);
       console.log(coordsObj.coord.lat.toString());
-      // setLat(coordsObj.coord.lat.toString());
-      // setLon(coordsObj.coord.lon.toString());
+
       if (response.ok) {
         let response3 = await fetch(
           `https://api.openweathermap.org/data/2.5/onecall?lat=${coordsObj.coord.lat.toString()}&lon=${coordsObj.coord.lon.toString()}&exclude=minutely&appid=622e478403a72ca161be9811cdcc6df5&units=metric`
@@ -103,7 +100,8 @@ const Main = () => {
               <Card.Header>
                 <h1>Umbrellator</h1>
                 <h2>
-                  Hi {name}, today in {defaultCity} it is {coordsObj.main.temp}C
+                  Hi {username}, today in {defaultCity} it is{" "}
+                  {coordsObj.main.temp}C
                 </h2>
                 <Nav variant="tabs" defaultActiveKey="#first">
                   <Nav.Item>
@@ -126,7 +124,7 @@ const Main = () => {
                 <Card.Text>
                   <Col>
                     <div> {coordsObj.weather[0].main}</div>
-                    {/* <div> {coordsObj.weather[0].description}</div> */}
+
                     <div>Temp {coordsObj.main.temp}C</div>
                     <div>Min {coordsObj.main.temp_min}C</div>
                     <div>Max {coordsObj.main.temp_max}C</div>
@@ -144,13 +142,11 @@ const Main = () => {
                 <Row>
                   {time === "weekly"
                     ? weatherObj.daily.map((day) => (
-                        // <Col xs={2} className="my-3">
                         <Card border="primary">
                           <Card.Header>
                             <strong>{day.dt}</strong>
                           </Card.Header>
                           <Card.Body>
-                            {/* <Card.Title>Primary Card Title</Card.Title> */}
                             <Card.Text className="text-align-left">
                               <div>Visibility: {day.visibility}</div>
                               <div>Pressure {day.pressure}</div>
@@ -189,72 +185,7 @@ const Main = () => {
           )}
         </Col>
         <Col xs={3}>
-          <Card border="danger" style={{ width: "18rem" }}>
-            <Card.Header>Favorite Cities</Card.Header>
-            <Card.Body>
-              <Card.Text>
-                {favorites.map((city) => (
-                  <div>
-                    <h3
-                      className="pointerCity"
-                      onClick={() => dispatch(setDefaultCityAction(city))}
-                    >
-                      {city}
-                    </h3>
-                  </div>
-                ))}
-
-                <div>
-                  <h3
-                    className="pointerCity"
-                    onClick={() => dispatch(setDefaultCityAction("Berlin"))}
-                  >
-                    Berlin
-                  </h3>
-                </div>
-                <div>
-                  <h3
-                    className="pointerCity"
-                    onClick={() => dispatch(setDefaultCityAction("London"))}
-                  >
-                    London
-                  </h3>
-                </div>
-                <div>
-                  <h3
-                    className="pointerCity"
-                    onClick={() => dispatch(setDefaultCityAction("Paris"))}
-                  >
-                    Paris
-                  </h3>
-                </div>
-                <div>
-                  <h3
-                    className="pointerCity"
-                    onClick={() => dispatch(setDefaultCityAction("Copenhagen"))}
-                  >
-                    Copenhagen
-                  </h3>
-                </div>
-                <div>
-                  <h3
-                    className="pointerCity"
-                    onClick={() => dispatch(setDefaultCityAction("Hell"))}
-                  >
-                    Hell
-                  </h3>
-                </div>
-              </Card.Text>
-            </Card.Body>
-            <FormControl
-              onChange={(e) =>
-                dispatch(addCityToFavoritesAction(e.target.value))
-              }
-              placeholder="Add City"
-              aria-label="Add City"
-              aria-describedby="basic-addon2"
-            />
-          </Card>
+          <FavoriteCities />
         </Col>
       </Row>
     </Container>
